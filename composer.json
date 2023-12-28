@@ -1,0 +1,14 @@
+{
+    "name": "acer/mvc-from-scratch",
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    },
+    "authors": [
+        {
+            "name": "TDev"
+        }
+    ],
+    "require": {}
+}
