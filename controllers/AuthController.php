@@ -8,6 +8,7 @@ class AuthController extends  Controller
 {
     public function login()
     {
+        $this->setLayout('login');
         return $this->render('login');
     }
 
