@@ -5,21 +5,19 @@ namespace app\controllers;
 use app\core\Application;
 use app\core\Controller;
 use app\core\Request;
+use app\models\User;
 
 class HomeController extends Controller
 {
+    protected $users;
+    public function __construct()
+    {
+        $this->users = new User();
+    }
 
     public function index(Request $request)
     {
-        if($request->getMethod() === 'get') {
-            $params = [
-                'name' => 'Thanh'
-            ];
-            return $this->render('hellobannho', $params);
-        } else {
-            $postDatas = $request->getBody();
-            var_dump($postDatas);
-        }
+        echo $this->users->getData();
     }
 
 }

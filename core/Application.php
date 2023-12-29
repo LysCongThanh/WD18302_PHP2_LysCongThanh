@@ -3,9 +3,7 @@
 namespace app\core;
 
 use AllowDynamicProperties;
-use app\core\Router;
-use app\core\Request;
-use app\core\Response;
+use app\core\database\Database;
 
 #[AllowDynamicProperties] class Application
 {
@@ -15,6 +13,7 @@ use app\core\Response;
     public Router $router;
     public static Application $app;
     public Controller $controller;
+    public Database $db;
 
     public function __construct($rootPath, array $config)
     {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a3792c56590abf89a88d7ae31928695",
+    "content-hash": "1e055c9f14d0d0cec917c9a0b167ca55",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -392,6 +392,39 @@
             "time": "2023-01-26T09:26:14+00:00"
         },
         {
+            "name": "thecodeholic/php-mvc-core",
+            "version": "v1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodeholic/tc-php-mvc-core.git",
+                "reference": "4c2447aeb5ad22a423ae61196c40415dd4b89c86"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodeholic/tc-php-mvc-core/zipball/4c2447aeb5ad22a423ae61196c40415dd4b89c86",
+                "reference": "4c2447aeb5ad22a423ae61196c40415dd4b89c86",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "thecodeholic\\phpmvc\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Zura Sekhniashvili",
+                    "email": "zurasekhniashvili@gmail.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/thecodeholic/tc-php-mvc-core/issues",
+                "source": "https://github.com/thecodeholic/tc-php-mvc-core/tree/v1.0.6"
+            },
+            "time": "2022-04-08T18:39:58+00:00"
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v5.6.0",
             "source": {
@@ -482,7 +515,9 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "ext-pdo": "*"
+    },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }
