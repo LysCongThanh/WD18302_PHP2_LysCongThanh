@@ -10,14 +10,11 @@ abstract class DbModel extends Model
     abstract public static function tableName(): string;
 
 
-    public static function primaryKey(): string
-    {
-        return 'id';
-    }
+    abstract public function primaryKey(): string;
 
     public function save(): true
     {
-        $tableName = $this->tableName();
+        $tableName = self::tableName();
         $attributes = $this->attributes();
         $params = array_map(fn($attr) => ":$attr", $attributes);
         $statement = self::prepare("INSERT INTO $tableName (" . implode(",", $attributes) . ") 
@@ -27,6 +24,20 @@ abstract class DbModel extends Model
         }
         $statement->execute();
         return true;
+    }
+
+    public function findOne(array $condition) {
+        $tableName = static::tableName();
+        $attrs = array_keys($condition);
+        $conditionStr = implode(" AND", array_map(fn($attr) => "$attr = :$attr", $attrs));
+        $sql = "SELECT * FROM $tableName WHERE $conditionStr";
+        $stmt = self::prepare($sql);
+        foreach ($condition as $key => $value) {
+            $stmt->bindValue(":$key", $value);
+        }
+
+        $stmt->execute();
+        return $stmt->fetchObject(static::class);
     }
 
     public static function prepare($sql): \PDOStatement
