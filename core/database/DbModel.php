@@ -4,17 +4,29 @@ namespace app\core\database;
 
 use app\core\Application;
 use app\core\Model;
-use app\core\QueryBuilder;
 
 abstract class DbModel extends Model
 {
-    use QueryBuilder;
-
     abstract public static function tableName(): string;
+
 
     public static function primaryKey(): string
     {
         return 'id';
+    }
+
+    public function save(): true
+    {
+        $tableName = $this->tableName();
+        $attributes = $this->attributes();
+        $params = array_map(fn($attr) => ":$attr", $attributes);
+        $statement = self::prepare("INSERT INTO $tableName (" . implode(",", $attributes) . ") 
+                VALUES (" . implode(",", $params) . ")");
+        foreach ($attributes as $attribute) {
+            $statement->bindValue(":$attribute", $this->{$attribute});
+        }
+        $statement->execute();
+        return true;
     }
 
     public static function prepare($sql): \PDOStatement
@@ -22,8 +34,9 @@ abstract class DbModel extends Model
         return Application::$app->db->prepare($sql);
     }
 
-    public function query(string $sql)
+    public static function getPDO(): \PDO
     {
-        return $sql;
+        return Application::$app->db->pdo;
     }
+
 }

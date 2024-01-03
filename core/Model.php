@@ -2,7 +2,7 @@
 
 namespace app\core;
 
-class Model
+abstract class Model
 {
     const RULE_REQUIRED = 'required';
     const RULE_EMAIL = 'email';
@@ -22,10 +22,7 @@ class Model
         }
     }
 
-    public function attributes(): array
-    {
-        return [];
-    }
+    abstract public function attributes(): array;
 
     public function labels(): array
     {
@@ -61,7 +58,7 @@ class Model
                     $this->addErrorByRule($attribute, self::RULE_MIN, ['min' => $rule['min']]);
                 }
                 if ($ruleName === self::RULE_MAX && strlen($value) > $rule['max']) {
-                    $this->addErrorByRule($attribute, self::RULE_MAX);
+                    $this->addErrorByRule($attribute, self::RULE_MAX, ['max' => $rule['max']]);
                 }
                 if ($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']}) {
                     $this->addErrorByRule($attribute, self::RULE_MATCH, ['match' => $rule['match']]);
