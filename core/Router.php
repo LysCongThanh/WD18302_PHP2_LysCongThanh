@@ -20,16 +20,29 @@ class Router
     }
 
 
+    /**
+     * @param $path
+     * @param $callback
+     * @return void
+     */
     public function get($path, $callback): void
     {
         $this->routes['get'][$path] = $callback;
     }
 
+    /**
+     * @param $path
+     * @param $callback
+     * @return void
+     */
     public function post($path, $callback): void
     {
         $this->routes['post'][$path] = $callback;
     }
 
+    /**
+     * @return mixed
+     */
     public function resolve(): mixed
     {
         $path = $this->request->getPath();
@@ -53,6 +66,11 @@ class Router
         return call_user_func($callback, $this->request, $this->response);
     }
 
+    /**
+     * @param $view
+     * @param $params
+     * @return array|string|null
+     */
     public function renderView($view, $params = []): array|string|null
     {
         $layoutContent = $this->layoutContent();
@@ -61,6 +79,9 @@ class Router
     }
 
 
+    /**
+     * @return false|string
+     */
     protected function layoutContent(): false|string
     {
         $layout = Application::$app->controller->layout;
@@ -69,6 +90,11 @@ class Router
         return ob_get_clean();
     }
 
+    /**
+     * @param $view
+     * @param $params
+     * @return false|string
+     */
     protected function renderOnlyView($view, $params = []): false|string
     {
         foreach ($params as $key => $value) {

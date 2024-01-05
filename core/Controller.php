@@ -9,9 +9,15 @@ class Controller
     public function setLayout($layout) {
         $this->layout = $layout;
     }
-    public function render($view, $params = []): array|string|null
+
+    /**
+     * @param $view
+     * @param array $params
+     * @return array|string|null
+     */
+    public function render($view, array $params = []): array|string|null
     {
-        return Application::$app->router->renderView($view, $params = []);
+        return Application::$app->router->renderView($view, $params);
     }
 
     public function registerMiddleware(BaseMiddleware $middleware) {

@@ -1,9 +1,10 @@
 <?php
-//Boostrap
+define("WEBROOT", dirname(__DIR__));
+//App initialize
 $app = require_once __DIR__ . '/../boostrap.php';
-//Web routes
+//Import web routes
 require_once __DIR__ . '/../routes/web.php';
-//API routes
+//Import Api routes
 require_once  __DIR__ . '/../routes/api.php';
-//Run app
+//App-running
 $app->run();

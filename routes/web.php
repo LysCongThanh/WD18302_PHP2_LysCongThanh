@@ -1,8 +1,8 @@
 <?php
 
-use app\controllers\HomeController;
+use app\controllers\Lab1Controller;
 
-$app->router->get('/login', [\app\controllers\AuthController::class, 'login']);
-$app->router->post('/login', [\app\controllers\AuthController::class, 'login']);
-$app->router->get('/register', [\app\controllers\AuthController::class, 'register']);
-$app->router->post('/register', [\app\controllers\AuthController::class, 'register']);
+$app->router->get('/', [Lab1Controller::class, 'index']);
+$app->router->get('/courses', [Lab1Controller::class, 'courses']);
+$app->router->get('/user', [Lab1Controller::class, 'user']);
+$app->router->post('/user', [Lab1Controller::class, 'user']);

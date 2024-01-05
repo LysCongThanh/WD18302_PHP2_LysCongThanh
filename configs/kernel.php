@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'userClass' => \app\models\User::class,
+    'userClass' => require_once 'app.php',
     'db' => require_once 'db.php',
     //...
 ];
