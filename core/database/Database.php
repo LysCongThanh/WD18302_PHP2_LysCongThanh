@@ -2,11 +2,14 @@
 
 namespace app\core\database;
 
-use app\core\Application;
+use app\core\exception\ConnectionException;
+use PDO;
+use PDOException;
+use PDOStatement;
 
 class Database
 {
-    public \PDO $pdo;
+    public PDO $pdo;
 
     /**
      * @param array $config
@@ -18,14 +21,14 @@ class Database
             $user = $config['user'] ?? '';
             $password = $config['password'] ?? '';
 
-            $this->pdo = new \PDO($dsn, $user, $password);
-            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        } catch (\PDOException $e) {
-            die('Lỗi kết nối: ' . $e->getMessage());
+            $this->pdo = new PDO($dsn, $user, $password);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException) {
+            throw new ConnectionException();
         }
     }
 
-    public function prepare($sql): \PDOStatement
+    public function prepare($sql): PDOStatement
     {
         return $this->pdo->prepare($sql);
     }

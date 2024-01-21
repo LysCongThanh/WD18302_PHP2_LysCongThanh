@@ -13,6 +13,10 @@ abstract class Model
 
     public array $errors = [];
 
+    /**
+     * @param $data
+     * @return void
+     */
     public function loadData($data): void
     {
         foreach ($data as $key => $value) {
@@ -22,23 +26,39 @@ abstract class Model
         }
     }
 
+    /**
+     * @return array
+     */
     abstract public function attributes(): array;
 
+    /**
+     * @return array
+     */
     public function labels(): array
     {
         return [];
     }
 
-    public function getLabel($attribute)
+    /**
+     * @param $attribute
+     * @return mixed
+     */
+    public function getLabel($attribute): mixed
     {
         return $this->labels()[$attribute] ?? $attribute;
     }
 
+    /**
+     * @return array
+     */
     public function rules(): array
     {
         return [];
     }
 
+    /**
+     * @return bool
+     */
     public function validate(): bool
     {
         foreach ($this->rules() as $attribute => $rules) {
@@ -81,6 +101,9 @@ abstract class Model
         return empty($this->errors);
     }
 
+    /**
+     * @return array{\app\core\Model.RULE_REQUIRED: string, \app\core\Model.RULE_EMAIL: string, \app\core\Model.RULE_MIN: string, \app\core\Model.RULE_MAX: string, \app\core\Model.RULE_MATCH: string, \app\core\Model.RULE_UNIQUE: string}
+     */
     public function errorMessages(): array
     {
         return [
@@ -93,12 +116,22 @@ abstract class Model
         ];
     }
 
+    /**
+     * @param $rule
+     * @return string
+     */
     public function errorMessage($rule): string
     {
         return $this->errorMessages()[$rule];
     }
 
-    protected function addErrorByRule(string $attribute, string $rule, $params = []): void
+    /**
+     * @param string $attribute
+     * @param string $rule
+     * @param array $params
+     * @return void
+     */
+    protected function addErrorByRule(string $attribute, string $rule, array $params = []): void
     {
         $params['field'] ??= $attribute;
         $errorMessage = $this->errorMessage($rule);
@@ -108,17 +141,30 @@ abstract class Model
         $this->errors[$attribute][] = $errorMessage;
     }
 
+    /**
+     * @param string $attribute
+     * @param string $message
+     * @return void
+     */
     public function addError(string $attribute, string $message): void
     {
         $this->errors[$attribute][] = $message;
     }
 
-    public function hasError($attribute)
+    /**
+     * @param $attribute
+     * @return false|mixed
+     */
+    public function hasError($attribute): mixed
     {
         return $this->errors[$attribute] ?? false;
     }
 
-    public function getFirstError($attribute)
+    /**
+     * @param $attribute
+     * @return mixed|string
+     */
+    public function getFirstError($attribute): mixed
     {
         $errors = $this->errors[$attribute] ?? [];
         return $errors[0] ?? '';

@@ -4,9 +4,13 @@ namespace app\core\database;
 
 use app\core\Application;
 use app\core\Model;
+use app\core\QueryBuilder;
 
 abstract class DbModel extends Model
 {
+
+    use QueryBuilder;
+
     abstract public static function tableName(): string;
 
     abstract public static function primaryKey(): string;
@@ -19,8 +23,9 @@ abstract class DbModel extends Model
         $tableName = self::tableName();
         $attrs = $this->attributes();
         $params = array_map(fn($attr) => ":$attr", $attrs);
-        $stmt= self::prepare("INSERT INTO $tableName (" . implode(",", $attrs) . ") 
-                VALUES (" . implode(",", $params) . ")");
+        $sql = "INSERT INTO $tableName (" . implode(",", $attrs) . ") 
+                VALUES (" . implode(",", $params) . ")";
+        $stmt = self::prepare($sql);
         foreach ($attrs as $attr) {
             $stmt->bindValue(":$attr", $this->{$attr});
         }
@@ -28,10 +33,34 @@ abstract class DbModel extends Model
     }
 
     /**
-     * @param array $condition
-     * @return DbModel|false|object|\stdClass|null
+     * @param array $conditions
+     * @return bool
      */
-    public function findOne(array $condition): DbModel|false|\stdClass|null
+    public function remove(array $conditions): bool
+    {
+        $tableName = static::tableName();
+        $attrs = array_keys($conditions);
+        $conditionString = implode(" AND", array_map(fn($attr) => "$attr = :$attr", $attrs));
+        $sql = "DELETE FROM $tableName WHERE $conditionString";
+        $stmt = self::prepare($sql);
+        foreach ($conditions as $key => $value) {
+            $stmt->bindValue(":$key", $value);
+        }
+
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
+    }
+
+    public function edit(array $attrs) {
+        $tableName = static::tableName();
+
+    }
+
+    /**
+     * @param array $condition
+     * @return DbModel|false|stdClass|null
+     */
+    public function findOne(array $condition): DbModel|false|stdClass|null
     {
         $tableName = static::tableName();
         $attrs = array_keys($condition);
@@ -51,13 +80,13 @@ abstract class DbModel extends Model
      * @param array $conditions
      * @return array|false
      */
-    public function find(array $conditions) : array|false
+    public function find(array $conditions): array|false
     {
         $tableName = static::tableName();
         $conditionStr = '';
 
         foreach ($conditions as $key => $value) {
-            if (strpos($value, '%') !== false) {
+            if (str_contains($value, '%')) {
                 // If the value contains '%', use LIKE
                 $conditionStr .= "$key LIKE :$key AND ";
             } else {
@@ -80,18 +109,36 @@ abstract class DbModel extends Model
     }
 
     /**
-     * @param array $fields
      * @return array | string
      */
     public function all(): array|string
     {
         $tableName = static::tableName();
         $attrs = $this->attributes();
-        $sql = "SELECT ".implode(',', $attrs)." FROM $tableName";
+        $sql = "SELECT " . implode(',', $attrs) . " FROM $tableName";
         $stmt = self::prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(self::getPDO()::FETCH_ASSOC);
     }
+
+    /**
+     * @param $sql
+     * @param array $params
+     * @return array|false
+     */
+    public function query($sql, array $params = []): array|false
+    {
+        $stmt = self::prepare($sql);
+        foreach ($params as $key => $value) {
+
+            $typeValue = gettype($value);
+
+            $stmt->bindValue($key, $value, self::getPDO()::PARAM_INT);
+        }
+        $stmt->execute();
+        return $stmt->fetchAll(self::getPDO()::FETCH_ASSOC);
+    }
+
 
     /**
      * @param $sql

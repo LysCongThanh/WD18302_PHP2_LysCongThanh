@@ -2,38 +2,62 @@
 
 namespace app\core;
 
+use JetBrains\PhpStorm\NoReturn;
+
 class Response
 {
-    protected $statusCode;
-    protected $headers = [];
-    protected $body;
+    protected mixed $statusCode;
+    protected array $headers = [];
+    protected mixed $body;
 
-    public function __construct($body = '', $statusCode = 200)
+    /**
+     * @param string $body
+     * @param int $statusCode
+     */
+    public function __construct(string $body = '', int $statusCode = 200)
     {
         $this->body = $body;
         $this->statusCode = $statusCode;
     }
 
-    public function setStatusCode($statusCode)
+    /**
+     * @param $statusCode
+     * @return $this
+     */
+    public function setStatusCode($statusCode): static
     {
         $this->statusCode = $statusCode;
         return $this;
     }
 
-    public function setHeader($name, $value)
+    /**
+     * @param $name
+     * @param $value
+     * @return $this
+     */
+    public function setHeader($name, $value): static
     {
         $this->headers[$name] = $value;
         return $this;
     }
 
-    public function setJsonContent($data)
+    /**
+     * @param $data
+     * @return $this
+     */
+    public function setJsonContent($data): static
     {
         $this->setHeader('Content-Type', 'application/json');
         $this->body = json_encode($data);
         return $this;
     }
 
-    public function redirect($url, $statusCode = 302)
+    /**
+     * @param $url
+     * @param int $statusCode
+     * @return void
+     */
+    #[NoReturn] public function redirect($url, int $statusCode = 302): void
     {
         $this->setStatusCode($statusCode)
             ->setHeader('Location', $url)
@@ -41,13 +65,26 @@ class Response
         exit;
     }
 
-    public function setCookie($name, $value, $expire = 0, $path = '/', $domain = '', $secure = false, $httponly = false)
+    /**
+     * @param $name
+     * @param $value
+     * @param int $expire
+     * @param string $path
+     * @param $domain
+     * @param $secure
+     * @param $httponly
+     * @return $this
+     */
+    public function setCookie($name, $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): static
     {
         setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
         return $this;
     }
 
-    public function send()
+    /**
+     * @return void
+     */
+    public function send(): void
     {
         // Set HTTP status code
         http_response_code($this->statusCode);
