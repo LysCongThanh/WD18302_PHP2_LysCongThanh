@@ -43,14 +43,14 @@ function Validator(options) {
             errorElement.innerText = '';
             getParent(inputElement, options.formGroupSelector).classList.remove('invalid');
             inputElement.classList.remove('is-invalid');
-            inputElement.classList.add('is-valid');
+            // inputElement.classList.add('is-valid');
         }
 
         return !errorMessage;
     }
 
     // Lấy element của form cần validate
-    const formElement = document.querySelector(options.form);
+    var formElement = document.querySelector(options.form);
     if (formElement) {
         formElement.onsubmit = function (e) {
             e.preventDefault();
@@ -168,7 +168,6 @@ function Validator(options) {
                     errorElement.innerText = '';
                     getParent(inputElement, options.formGroupSelector).classList.remove('invalid');
                     inputElement.classList.remove('is-invalid');
-                    inputElement.classList.add('is-valid');
                 }
             });
         });

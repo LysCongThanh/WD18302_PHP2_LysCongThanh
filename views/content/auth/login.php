@@ -24,14 +24,16 @@ $this->title = $title;
                     <p class="mb-0">Nhập tài khoản và mật khẩu để đăng nhập</p>
                 </div>
                 <div class="card-body">
-                    <form action="/login" role="form" method="post" class="text-start">
+                    <form id="form-login" action="/login" role="form" method="post" class="text-start">
                         <label>Email</label>
-                        <div class="mb-3">
+                        <div class="mb-3 form-group">
                             <input type="email" name="email" class="form-control" placeholder="Email..." aria-label="Email">
+                            <div class="form-message invalid-feedback"></div>
                         </div>
                         <label>Password</label>
-                        <div class="mb-3">
+                        <div class="mb-3 form-group">
                             <input type="password" name="password" class="form-control" placeholder="Password..." aria-label="Password">
+                            <div class="form-message"></div>
                         </div>
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="rememberMe" checked>

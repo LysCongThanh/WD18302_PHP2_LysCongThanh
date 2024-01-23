@@ -32,23 +32,24 @@ class AuthController extends Controller
 
                 Application::$app->session->setFlash('error', $errors);
             }
-//
-//            // Check login >>
-//            if ($usersModel->login()) {
-//                $response->redirect('/profile', 301);
-//                exit();
-//            } else {
-//                // error handle
-//
-//                var_dump(Application::$app->session->getFlash('message'));
-//
-//            }
+
+            // Check login >>
+            if ($usersModel->login()) {
+                $response->redirect('/profile', 301);
+                exit();
+            } else {
+                // error handle
+
+                var_dump(Application::$app->session->getFlash('message'));
+
+            }
         }
 
         $this->setLayout('auth');
 
         return $this->render('content/auth/login', [
-            'title' => 'TeleCards - Login'
+            'title' => 'TeleCards - Login',
+            'script_src' => 'pages/login.js'
         ]);
     }
 

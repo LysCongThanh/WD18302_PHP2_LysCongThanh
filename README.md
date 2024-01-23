@@ -3,3 +3,5 @@
 #step 2: open terminal, run php -S localhost:{your post} -t public
 #step 3: rename .env.examp to .env
 #step 4: Set database configuration value
+
+#step 5: Login with: thanh@gmail.com password: thaytinhzuize

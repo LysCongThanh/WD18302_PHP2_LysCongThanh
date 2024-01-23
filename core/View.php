@@ -11,7 +11,7 @@ class View
      * @param $params
      * @return array|string|null
      */
-    public function renderView($view, $params = []): array|string|null
+    public function renderView($view, array $params = []): array|string|null
     {
         $viewContent = $this->renderOnlyView($view, $params);
         $layoutContent = $this->layoutContent($params);
@@ -22,14 +22,18 @@ class View
      * @param $params
      * @return false|string
      */
-    protected function layoutContent($params = []): false|string
+    protected function layoutContent(array $params = []): false|string
     {
+        $params['app'] = Application::$app;
+
+        foreach ($params as $key => $value) {
+            $$key = $value;
+        }
+
         $layout = Application::$app->layout;
         if (Application::$app->controller) {
             $layout = Application::$app->controller->layout;
         }
-
-        $params['title'] = $this->title;
 
         ob_start();
         include_once Application::$ROOT_DIR . "/views/layouts/$layout.php";
@@ -41,7 +45,7 @@ class View
      * @param $params
      * @return false|string
      */
-    protected function renderOnlyView($view, $params = []): false|string
+    protected function renderOnlyView($view, array $params = []): false|string
     {
         $params['app'] = Application::$app;
 

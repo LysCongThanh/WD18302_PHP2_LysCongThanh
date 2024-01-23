@@ -15,14 +15,15 @@ class AuthMiddleware extends BaseMiddleware
     }
 
     /**
-     * @throws ForbiddenException
+     * @
      */
     public function execute(): void
     {
         if (Application::isGuest()) {
             if(empty($this->action) || in_array(Application::$app->controller->action, $this->action)) {
-                throw new ForbiddenException();
+                Application::$app->response->redirect('/login', 301);
             }
         }
     }
 }
+

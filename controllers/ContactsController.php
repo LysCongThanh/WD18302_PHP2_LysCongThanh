@@ -3,9 +3,15 @@
 namespace app\controllers;
 
 use app\core\Controller;
+use app\core\middlewares\AuthMiddleware;
 
 class ContactsController extends Controller
 {
+
+    public function __construct()
+    {
+        return $this->registerMiddleware(new AuthMiddleware(['list']));
+    }
 
     public function list()
     {
