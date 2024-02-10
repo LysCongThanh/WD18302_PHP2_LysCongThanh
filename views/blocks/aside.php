@@ -105,6 +105,8 @@
                 </div>
             </div>
         </div>
-        <a href="/logout" target="_blank" class="btn btn-dark btn-sm w-100 mb-3">Dang xuat</a>
+        <form action="/logout" method="post">
+            <button type="submit" class="btn btn-dark btn-sm w-100 mb-3">Đăng xuất</button>
+        </form>
     </div>
 </aside>

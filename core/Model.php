@@ -69,7 +69,7 @@ abstract class Model
                     $ruleName = $rule[0];
                 }
                 if ($ruleName === self::RULE_REQUIRED && !$value) {
-                    $this->addErrorByRule($attribute, self::RULE_REQUIRED);
+                    $this->addErrorByRule($attribute, self::RULE_REQUIRED, ['field' => $attribute]);
                 }
                 if ($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
                     $this->addErrorByRule($attribute, self::RULE_EMAIL);
@@ -93,7 +93,7 @@ abstract class Model
                     $statement->execute();
                     $record = $statement->fetchObject();
                     if ($record) {
-                        $this->addErrorByRule($attribute, self::RULE_UNIQUE, ['field' => $attribute]);
+                        $this->addErrorByRule($attribute, self::RULE_UNIQUE, ['field' => $attribute, 'value' => $this->{$attribute}]);
                     }
                 }
             }
@@ -107,12 +107,12 @@ abstract class Model
     public function errorMessages(): array
     {
         return [
-            self::RULE_REQUIRED => 'This field is required',
-            self::RULE_EMAIL => 'This field must be valid email address',
+            self::RULE_REQUIRED => '{field} Không được bỏ trống !',
+            self::RULE_EMAIL => 'Email không hợp lệ !',
             self::RULE_MIN => 'Min length of this field must be {min}',
             self::RULE_MAX => 'Max length of this field must be {max}',
             self::RULE_MATCH => 'This field must be the same as {match}',
-            self::RULE_UNIQUE => 'Record with with this {field} already exists',
+            self::RULE_UNIQUE => '{field} {value} đã tồn tại !',
         ];
     }
 

@@ -12,6 +12,7 @@ use app\core\Application;
 
 $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);
+$app->router->post('/logout', [AuthController::class, 'logout']);
 $app->router->get('/register', [AuthController::class, 'register']);
 $app->router->post('/register', [AuthController::class, 'register']);
 $app->router->get('/profile', [AuthController::class, 'profile']);
@@ -22,6 +23,7 @@ $app->router->get('/profile', [AuthController::class, 'profile']);
 
 $app->router->get('/', [ContactsController::class, 'list']);
 $app->router->get('/contacts/add', [ContactsController::class, 'add']);
+$app->router->post('/contacts/add', [ContactsController::class, 'add']);
 $app->router->get('/contacts/details', [ContactsController::class, 'details']);
 $app->router->get('/contacts/edit', [ContactsController::class, 'edit']);
 

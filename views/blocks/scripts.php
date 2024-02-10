@@ -4,39 +4,12 @@
 <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
 <script src="/assets/js/plugins/choices.min.js"></script>
 <script src="/assets/js/plugins/dropzone.min.js"></script>
+<script src="<?= $app->url('assets/js/Validation.js') ?>"></script>
 
 <script src="/assets/js/plugins/datatables.js"></script>
 <script>
-    // if (document.getElementById('products-list')) {
-    //     const dataTableSearch = new simpleDatatables.DataTable("#products-list", {
-    //         searchable: true,
-    //         fixedHeight: false,
-    //         perPage: 7
-    //     });
-    //
-    //     document.querySelectorAll(".export").forEach(function(el) {
-    //         el.addEventListener("click", function(e) {
-    //             var type = el.dataset.type;
-    //
-    //             var data = {
-    //                 type: type,
-    //                 filename: "soft-ui-" + type,
-    //             };
-    //
-    //             if (type === "csv") {
-    //                 data.columnDelimiter = "|";
-    //             }
-    //
-    //             dataTableSearch.export(data);
-    //         });
-    //     });
-    // };
-    if (document.getElementById('choices-group')) {
-        var language = document.getElementById('choices-group');
-        const example = new Choices(language, {
-            
-        });
-    }
+
+    const webRoot = window.location.origin;
 
     Dropzone.autoDiscover = false;
     if(document.querySelector('#productImg')) {
@@ -64,3 +37,4 @@
 
 <script src="/assets/js/argon-dashboard.js"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v84a3a4012de94ce1a686ba8c167c359c1696973893317" integrity="sha512-euoFGowhlaLqXsPWQ48qSkBSCFs3DPRyiwVu3FjR96cMPx+Fr+gpWRhIafcHwqwCqWS42RZhIudOvEI+Ckf6MA==" data-cf-beacon='{"rayId":"845da2b59a020795","version":"2023.10.0","token":"1b7cbb72744b40c580f8633c6b62637e"}' crossorigin="anonymous"></script>
+<script src="<?= $app->url('assets/dist/main.bundle.js') ?>"></script>

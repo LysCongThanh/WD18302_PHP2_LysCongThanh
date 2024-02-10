@@ -4,14 +4,29 @@ namespace app\models;
 
 use app\core\Application;
 use app\core\database\DbModel;
+use Override;
 
 class Users extends DbModel
 {
 
-    public string $email;
-    public string $password;
+    private static $instance;
 
-    public static function tableName(): string
+    public string $email = '';
+    public string $password = '';
+    public ?string $first_name = '';
+    public ?string $last_name = '';
+    public string $password_confirm = '';
+    public bool $isRegister = false;
+
+    public static function getInstance(): self{
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    #[Override] public static function tableName(): string
     {
         return 'users';
     }
@@ -24,16 +39,35 @@ class Users extends DbModel
     public function attributes(): array
     {
         return [
-            'email', 'password'
+            'email', 'password', 'first_name', 'last_name'
         ];
     }
 
     public function rules(): array
     {
-        return [
+
+        $rules = [
             'email' => [self::RULE_REQUIRED],
-            'password' => [self::RULE_REQUIRED]
+            'password' => [self::RULE_REQUIRED],
         ];
+
+        if($this->isRegister === true) {
+
+            $rules['first_name'] = [self::RULE_REQUIRED];
+            $rules['last_name'] = [self::RULE_REQUIRED];
+            $rulse['password-confirm'] = [[self::RULE_MATCH, 'match' => 'password']];
+
+            $rules['email'] = [self::RULE_REQUIRED, self::RULE_EMAIL, [
+                self::RULE_UNIQUE, 'class' => self::class
+            ]];
+        }
+
+        return $rules;
+    }
+
+    public function register() {
+        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+        return parent::save();
     }
 
     /**
@@ -42,15 +76,15 @@ class Users extends DbModel
     public function login(): bool
     {
 
-        $user = self::findOne(['email' => $this->email]);
+        $user = parent::findOne(['email' => $this->email]);
 
         if (!$user) {
-            Application::$app->session->setFlash('message', 'Tai khoan khong ton tai !');
+            $this->addError('email', 'Email không tồn tại !');
             return false;
         }
 
         if (!password_verify($this->password, hash: $user->password)) {
-            Application::$app->session->setFlash('message', 'Mat khau khong dung !');
+            $this->addError('password', 'Mật khẩu không đúng !');
             return false;
         }
 

@@ -1,3 +1,7 @@
 /vendor/
+/node_modules/
+/public/assets/dist/
 .idea
 .env
+composer.lock
+package-lock.json

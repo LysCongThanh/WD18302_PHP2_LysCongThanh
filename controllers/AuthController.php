@@ -14,13 +14,13 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->registerMiddleware(new AuthMiddleware(['profile']));
+        $this->registerMiddleware(new AuthMiddleware(['profile', 'logout']));
     }
 
     public function login(Request $request, Response $response)
     {
         if ($request->isPost()) {
-            $usersModel = new Users();
+            $usersModel = Users::getInstance();
             $usersModel->loadData($request->getBody());
 
             if (!$usersModel->validate()) {
@@ -41,7 +41,6 @@ class AuthController extends Controller
                 // error handle
 
                 var_dump(Application::$app->session->getFlash('message'));
-
             }
         }
 
@@ -49,8 +48,16 @@ class AuthController extends Controller
 
         return $this->render('content/auth/login', [
             'title' => 'TeleCards - Login',
-            'script_src' => 'pages/login.js'
         ]);
+    }
+
+    public function logout(Request $request, Response $response): void
+    {
+
+        if ($request->isPost()) {
+            Application::$app->logout();
+            $response->redirect('/', 302);
+        }
     }
 
     /**
@@ -58,7 +65,7 @@ class AuthController extends Controller
      * @param Response $response
      * @return array|string|null
      */
-    public function register(Request $request, Response $response): array|string|null
+    public function register()
     {
         $this->setLayout('auth');
         return $this->render('content/auth/register', [
@@ -66,13 +73,12 @@ class AuthController extends Controller
         ]);
     }
 
-    public function profile(Request $request, Response $response) {
+    public function profile(Request $request, Response $response)
+    {
 
         $this->setLayout('main');
         return $this->render('content/auth/profile', [
             'title' => 'TeleCards - Profile'
         ]);
-
     }
-
 }

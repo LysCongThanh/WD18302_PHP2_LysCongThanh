@@ -75,7 +75,7 @@ class Response
      * @param $httponly
      * @return $this
      */
-    public function setCookie($name, $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): static
+    public function setCookie($name, $value, int $expire = 0, string $path = '/', string $domain = '', false $secure = false, false $httponly = false): Response
     {
         setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
         return $this;

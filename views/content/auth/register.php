@@ -8,7 +8,7 @@ $this->title = $title
     <span class="mask bg-gradient-dark opacity-6"></span>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-7">
+            <div class="col-lg-6 col-md-7">
                 <div class="card z-index-0">
                     <div class="card-header text-center pt-4">
                         <h5>Đăng ký với</h5>
@@ -58,26 +58,46 @@ $this->title = $title
                         </div>
                     </div>
                     <div class="card-body">
-                        <form role="form">
-                            <div class="mb-3">
-                                <input type="text" class="form-control" placeholder="Name..." aria-label="Name">
+                        <form id="register-form" action="/register" role="form" method="post">
+
+                            <div class="row">
+                                <div class="col-6 mb-3 form-group">
+                                    <input type="text" class="form-control" name="first_name" placeholder="Nhập họ..." aria-label="Name">
+                                    <div class="form-message"></div>
+                                </div>
+
+                                <div class="col-6 mb-3 form-group">
+                                    <input type="text" name="last_name" class="form-control" placeholder="Nhập tên...">
+                                    <div class="form-message"></div>
+                                </div>
+
+                                <div class="col-12 mb-3 form-group">
+                                    <input type="email" class="form-control" name="email" placeholder="Email..." aria-label="Email">
+                                    <div class="form-message"></div>
+                                </div>
+
+                                <div class="col-12 mb-3 form-group">
+                                    <input type="password" class="form-control" name="password" placeholder="Mật khẩu..." aria-label="Password">
+                                    <div class="form-message"></div>
+                                </div>
+
+                                <div class="col-12 md-3 form-group">
+                                    <input type="password" name="password-comfirm" class="form-control" placeholder="Xác nhận mật khẩu...">
+                                    <div class="form-message"></div>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <input type="email" class="form-control" placeholder="Email..." aria-label="Email">
-                            </div>
-                            <div class="mb-3">
-                                <input type="password" class="form-control" placeholder="Password..." aria-label="Password">
-                            </div>
-                            <div class="form-check form-check-info text-start">
+
+                            <!-- <div class="form-check form-check-info text-start">
                                 <input class="form-check-input" type="checkbox" value id="flexCheckDefault" checked>
                                 <label class="form-check-label" for="flexCheckDefault">
                                     I agree the <a href="javascript:;" class="text-dark font-weight-bolder">Chính sách và bảo mật</a>
                                 </label>
-                            </div>
+                            </div> -->
+
                             <div class="text-center">
-                                <button type="button" class="btn bg-gradient-dark w-100 my-4 mb-2">Đăng ký</button>
+                                <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Đăng ký</button>
                             </div>
-                            <p class="text-sm mt-3 mb-0">Đã có tài khoản ? <a href="javascript:;" class="text-dark font-weight-bolder">Đăng nhập</a></p>
+                            <p class="text-sm mt-3 mb-0">Đã có tài khoản ? <a href="<?= $app->url('login') ?>" class="text-dark font-weight-bolder">Đăng nhập</a></p>
                         </form>
                     </div>
                 </div>

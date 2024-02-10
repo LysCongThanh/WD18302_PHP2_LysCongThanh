@@ -17,6 +17,7 @@ $this->title = $title;
 </div>
 <div class="container">
     <div class="row mt-lg-n10 mt-md-n11 mt-n10 justify-content-center">
+        <div id="alert"></div>
         <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
             <div class="card mt-5">
                 <div class="card-header pb-0 text-start">
@@ -47,7 +48,7 @@ $this->title = $title;
                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                     <p class="mb-4 text-sm mx-auto">
                         Đăng ký tài khoản ?
-                        <a href="javascript:;" class="text-primary font-weight-bold">Đăng ký</a>
+                        <a href="<?= $app->url('register') ?>" class="text-primary font-weight-bold">Đăng ký</a>
                     </p>
                 </div>
             </div>

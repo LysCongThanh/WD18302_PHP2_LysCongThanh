@@ -4,23 +4,30 @@ namespace app\controllers;
 
 use app\core\Controller;
 use app\core\middlewares\AuthMiddleware;
+use app\core\Response;
+use app\models\Contacts;
+use app\core\Request;
 
 class ContactsController extends Controller
 {
 
     public function __construct()
     {
-        return $this->registerMiddleware(new AuthMiddleware(['list']));
+        return $this->registerMiddleware(new AuthMiddleware(['list', 'add', 'details', 'edit']));
     }
 
     public function list()
     {
+        $contacts = Contacts::getInstance();
+        $contacts->getContactsByUser(4);
+
         return $this->render('content/contacts/list', [
-            'title' => 'TeleCards - Contacts'
+            'title' => 'TeleCards - Contacts',
+            'contacts' => $contacts->getContactsByUser(4),
         ]);
     }
 
-    public function details()
+    public function details(Request $request)
     {
         return $this->render('content/contacts/details', [
             'title' => 'TeleCards - Details'
@@ -33,13 +40,31 @@ class ContactsController extends Controller
             'title' => 'TeleCards - Edit'
         ]);
     }
-
-    public function add()
+    
+    public function add(Request $request, Response $response)
     {
+
+        if ($request->isPost()) {
+            $postData = $request->getBody();
+            $dataConverted = [
+                'id_user' => intval($postData['id_user']),
+                'name' => strval($postData['name']),
+                'telephone' => strval($postData['telephone']),
+                'company' => strval($postData['company']),
+            ];
+            $contactsModel = new Contacts;
+            $contactsModel->loadData($postData);
+            if($contactsModel->validate()) {
+                $addContactResult = $contactsModel->createContact();
+                var_dump($addContactResult); die();
+            }
+
+            var_dump($contactsModel); die();
+        }
+
         return $this->render('content/contacts/add', [
             'title' => 'TeleCards - Add'
         ]);
     }
-
 
 }

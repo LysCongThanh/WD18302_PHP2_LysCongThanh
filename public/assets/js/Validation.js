@@ -76,7 +76,7 @@ function Validator(options) {
                         errorTab = inputElement.closest('.tab-pane');
                     }
                 });
-// Remove 'show' and 'active' classes from all tabs
+                // Remove 'show' and 'active' classes from all tabs
                 var allTabs = formElement.querySelectorAll('.tab-pane');
                 allTabs.forEach(function (tab) {
                     tab.classList.remove('show', 'active');
@@ -224,6 +224,23 @@ Validator.isEmail = function (selector, message) {
     };
 }
 
+Validator.isPassword = (selector, min = null, max = null) => {
+    return {
+        selector: selector,
+        test: (value) => {
+
+            if (value.length === 0) {
+                return 'Không được bỏ trống';
+            }
+
+            if (min !== null && max !== null) {
+                return value.length >= min && value.length <= max ? undefined : `Mật khẩu tối thiểu từ ${min} - ${max}`;
+            }
+        }
+    }
+}
+
+
 Validator.minLength = function (selector, min, message) {
     return {
         selector: selector,
@@ -280,7 +297,7 @@ Validator.isEmail = function (selector, message) {
         test: function (value) {
 
             let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            if(!regex.test(value)) {
+            if (!regex.test(value)) {
                 return message || "* Vui lòng nhập email !";
             }
 

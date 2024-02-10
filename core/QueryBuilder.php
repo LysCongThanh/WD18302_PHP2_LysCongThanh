@@ -4,16 +4,16 @@ namespace app\core;
 
 trait QueryBuilder
 {
-    protected $tableName = '';
-    protected $where = '';
-    protected $operator = '';
-    protected $selectField = '*';
-    protected $limit = '';
-    protected $orderBy = '';
-    protected $innerJoin = '';
-    protected $insert = '';
-    protected $leftJoin = '';
-    protected $groupBy = '';
+    private $tableName = '';
+    private $where = '';
+    private $operator = '';
+    private $selectField = '*';
+    private $limit = '';
+    private $orderBy = '';
+    private $innerJoin = '';
+    private $insert = '';
+    private $leftJoin = '';
+    private $groupBy = '';
 
     /**
      * @param $tableName

@@ -11,25 +11,40 @@ abstract class DbModel extends Model
 
     use QueryBuilder;
 
+    private static $instance;
+
     abstract public static function tableName(): string;
 
     abstract public static function primaryKey(): string;
+
+    abstract public static function getInstance(): self;
 
     /**
      * @return bool
      */
     public function save(): bool
     {
-        $tableName = self::tableName();
-        $attrs = $this->attributes();
-        $params = array_map(fn($attr) => ":$attr", $attrs);
-        $sql = "INSERT INTO $tableName (" . implode(",", $attrs) . ") 
-                VALUES (" . implode(",", $params) . ")";
-        $stmt = self::prepare($sql);
-        foreach ($attrs as $attr) {
-            $stmt->bindValue(":$attr", $this->{$attr});
+        try {
+            $tableName = $this->tableName();
+            $attributes = array_intersect($this->attributes(), array_keys(get_object_vars($this)));
+            $params = array_map(fn ($attr) => ":$attr", $attributes);
+
+            $sql = "INSERT INTO $tableName (" . implode(",", $attributes) . ") 
+            VALUES (" . implode("", $params) . ")";
+
+            $stmt = self::prepare($sql);
+
+            foreach ($attributes as $attr) {
+                $attrValue = $this->{$attr};
+                $pdoType = $this->getPDOType($attrValue);
+
+                $stmt->bindValue(":$attr", $attrValue, $pdoType);
+            }
+
+            return $stmt->execute();
+        } catch (\PDOException $e) {
+            echo $e->getMessage();
         }
-        return $stmt->execute();
     }
 
     /**
@@ -40,7 +55,7 @@ abstract class DbModel extends Model
     {
         $tableName = static::tableName();
         $attrs = array_keys($conditions);
-        $conditionString = implode(" AND", array_map(fn($attr) => "$attr = :$attr", $attrs));
+        $conditionString = implode(" AND", array_map(fn ($attr) => "$attr = :$attr", $attrs));
         $sql = "DELETE FROM $tableName WHERE $conditionString";
         $stmt = self::prepare($sql);
         foreach ($conditions as $key => $value) {
@@ -51,21 +66,21 @@ abstract class DbModel extends Model
         return $stmt->rowCount() > 0;
     }
 
-    public function edit(array $attrs) {
-        $tableName = static::tableName();
-
+    public function edit(array $attrs)
+    {
+        // To do ....
     }
 
     /**
      * @param array $condition
      * @return DbModel|false|stdClass|null
      */
-    public function findOne(array $condition): DbModel|false|stdClass|null
+    public function findOne(array $condition)
     {
         $tableName = static::tableName();
         $attrs = array_keys($condition);
-        $conditionStr = implode(" AND", array_map(fn($attr) => "$attr = :$attr", $attrs));
-        $sql = "SELECT * FROM $tableName WHERE $conditionStr";
+        $conditionStr = implode(" AND", array_map(fn ($attr) => "$attr = :$attr", $attrs));
+        $sql = "SELECT * FROM $tableName WHERE BINARY $conditionStr";
         $stmt = self::prepare($sql);
         foreach ($condition as $key => $value) {
             $stmt->bindValue(":$key", $value);
@@ -149,6 +164,20 @@ abstract class DbModel extends Model
         return Application::$app->db->prepare($sql);
     }
 
+    private function getPDOType($value): int
+    {
+        switch (gettype($value)) {
+            case 'integer':
+                return self::getPDO()::PARAM_INT;
+            case 'boolean':
+                return self::getPDO()::PARAM_BOOL;
+            case 'NULL':
+                return self::getPDO()::PARAM_NULL;
+            default:
+                return self::getPDO()::PARAM_STR;
+        }
+    }
+
     /**
      * @return \PDO
      */
@@ -156,5 +185,4 @@ abstract class DbModel extends Model
     {
         return Application::$app->db->pdo;
     }
-
 }

@@ -5,5 +5,5 @@ $web_root = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/';
 
 return [
     'url' => $web_root,
-    'api_prefix' => 'api'
+    'api_prefix' => '/api'
 ];
