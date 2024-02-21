@@ -117,6 +117,9 @@ use app\core\database\DbModel;
         } catch (\Exception $e) {
             $errPage = strval($e->getCode());
             $this->layout = 'error';
+            if($this->controller) {
+                $this->controller->layout = 'error';
+            }
             echo $this->view->renderView('error/_'.$errPage, [
                 'title' => $e->getMessage(),
                 'exception' => $e

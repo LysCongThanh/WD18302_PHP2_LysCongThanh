@@ -17,13 +17,21 @@ class AuthMiddleware extends BaseMiddleware
     /**
      * @
      */
-    public function execute(): void
+    public function checkLogin()
     {
         if (Application::isGuest()) {
-            if(empty($this->action) || in_array(Application::$app->controller->action, $this->action)) {
-                Application::$app->response->redirect('/login', 301);
-            }
+            Application::$app->response->redirect('/login', 301);
+        } else {
+            return 'next';
+        }
+    }
+
+    public function isUser()
+    {
+        if (!Application::isGuest()) {
+            Application::$app->response->redirect('/', 301);
+        } else {
+            return 'next';
         }
     }
 }
-

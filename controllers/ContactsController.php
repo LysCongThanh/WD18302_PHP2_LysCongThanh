@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\core\Application;
 use app\core\Controller;
 use app\core\middlewares\AuthMiddleware;
 use app\core\Response;
@@ -13,17 +14,26 @@ class ContactsController extends Controller
 
     public function __construct()
     {
-        return $this->registerMiddleware(new AuthMiddleware(['list', 'add', 'details', 'edit']));
+        return $this->registerMiddleware(new AuthMiddleware([
+            'list' => 'checkLogin', 
+            'add' => 'checkLogin', 
+            'details' => 'checkLogin', 
+            'edit' => 'checkLogin'
+        ]));
     }
 
     public function list()
     {
         $contacts = Contacts::getInstance();
-        $contacts->getContactsByUser(4);
+        $user_id = Application::$app->session->get('user');
+        $contactsData = null;
+        if($user_id) {
+            $contactsData = $contacts->getContactsByUser($user_id);
+        }
 
         return $this->render('content/contacts/list', [
             'title' => 'TeleCards - Contacts',
-            'contacts' => $contacts->getContactsByUser(4),
+            'contacts' => $contactsData
         ]);
     }
 
@@ -40,7 +50,7 @@ class ContactsController extends Controller
             'title' => 'TeleCards - Edit'
         ]);
     }
-    
+
     public function add(Request $request, Response $response)
     {
 
@@ -53,18 +63,31 @@ class ContactsController extends Controller
                 'company' => strval($postData['company']),
             ];
             $contactsModel = new Contacts;
-            $contactsModel->loadData($postData);
-            if($contactsModel->validate()) {
+            $contactsModel->loadData($dataConverted);
+            if ($contactsModel->validate()) {
                 $addContactResult = $contactsModel->createContact();
-                var_dump($addContactResult); die();
+                var_dump($addContactResult);
+                die();
             }
 
-            var_dump($contactsModel); die();
+            var_dump($contactsModel);
+            die();
         }
 
         return $this->render('content/contacts/add', [
             'title' => 'TeleCards - Add'
         ]);
+    }
+
+    public function delete(Request $request, Response $response)
+    {
+        if($request->isPost()) {
+            $postData = $request->getBody();
+            $dataConverted = [
+                'id' => intval($postData['id'])
+            ];
+            var_dump($dataConverted);
+        }
     }
 
 }

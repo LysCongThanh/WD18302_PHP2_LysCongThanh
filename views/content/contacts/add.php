@@ -8,37 +8,42 @@
         <form action="<?= $app->url('contacts/add') ?>" method="post" id="form-add-contact">
             <div class="card mt-4" id="basic-info">
                 <div class="card-header">
-                    <h5>Thong tin lien lac</h5>
+                    <h5>Thông tin liên hệ</h5>
                 </div>
                 <div class="card-body pt-0">
                     <div class="row">
-                        <div class="col-6">
-                            <label class="form-label">Ten lien he</label>
-                            <div class="input-group">
-                                <input id="firstName" name="name" class="form-control" type="text" placeholder="Nhap ten lien he..." required="required">
-                            </div>
+                        <div class="col-6 form-group">
+                            <label class="form-label">Tên liên hệ</label>
+
+                            <input id="firstName" name="name" class="form-control" type="text" placeholder="Nhập tên liên hệ..." required="required">
+
+                            <div class="form-message"></div>
                         </div>
-                        <div class="col-6">
-                            <label class="form-label">So dien thoai</label>
-                            <div class="input-group">
-                                <input id="lastName" name="telephone" class="form-control" type="text" placeholder="Nhap so dien thoai..." required="required">
-                            </div>
+                        <div class="col-6 form-group">
+                            <label class="form-label">Số điện thoại</label>
+
+                            <input id="lastName" name="telephone" class="form-control" type="text" placeholder="Nhập số điện thoại..." required="required">
+
+                            <div class="form-message"></div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="row">
-                                <div class="col-sm-5 col-5">
-                                    <label class="form-label mt-4">Doanh nghiep</label>
-                                    <input class="form-control" name="company" placeholder="Nhap ten doanh nghiep">
+                                <div class="col-sm-5 col-5 form-group">
+                                    <label class="form-label mt-4">Doanh nghiệp</label>
+                                    <input class="form-control" name="company" placeholder="Nhập tên doanh nghiệp">
+                                    <div class="form-message"></div>
                                 </div>
-                                <div class="col-sm-7 col-7">
-                                    <label class="form-label mt-4">Nhom lien he</label>
+                                <div class="col-sm-7 col-7 form-group">
+                                    <label class="form-label mt-4">Nhóm liên hệ</label>
                                     <select class="form-control" name="group" id="choices-group" multiple>
-                                        <option value="English">English</option>
-                                        <option value="French">French</option>
-                                        <option value="Spanish">Spanish</option>
+                                        <option value="" disabled>Phân loại liên hệ</option>
+                                        <option value="1">English</option>
+                                        <option value="2">French</option>
+                                        <option value="3">Spanish</option>
                                     </select>
+                                    <div class="form-message"></div>
                                 </div>
                             </div>
                         </div>
@@ -48,13 +53,13 @@
 
             <div class="card mt-4" id="password">
                 <div class="card-header">
-                    <h5>Hinh nen</h5>
+                    <h5>Ảnh đại diện</h5>
                 </div>
                 <div class="card-body pt-0">
                     <div class="row mt-3">
                         <div class="col-12">
-                            <label>Product images</label>
-                            <div action="/file-upload" class="form-control dropzone" id="productImg"></div>
+                            <label>Hình ảnh</label>
+                            <div action="/file-upload" class="form-control dropzone" id="image"></div>
                         </div>
                     </div>
                     <button type="submit" class="btn bg-gradient-dark btn-sm float-end mt-6 mb-0">Thêm mới</button>

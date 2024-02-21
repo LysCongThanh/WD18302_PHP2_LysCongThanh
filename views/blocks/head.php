@@ -40,7 +40,7 @@
     <link id="pagestyle" href="/assets/css/argon-dashboard.min.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
-
+    <link rel="stylesheet" href="<?= $app->url('assets/css/custom.css') ?>">
     <style>
         #ofBar {
             display: none !important;

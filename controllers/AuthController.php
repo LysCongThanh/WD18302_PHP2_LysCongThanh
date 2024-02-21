@@ -14,7 +14,11 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->registerMiddleware(new AuthMiddleware(['profile', 'logout']));
+        $this->registerMiddleware(new AuthMiddleware([
+            'profile' => 'checkLogin', 
+            'logout' => 'checkLogin',
+            'login' => 'isUser'
+        ]));
     }
 
     public function login(Request $request, Response $response)

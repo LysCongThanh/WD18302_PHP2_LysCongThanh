@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use app\helpers\Helpers;
+
 class View
 {
     public string $title = '';
@@ -24,7 +26,12 @@ class View
      */
     protected function layoutContent(array $params = []): false|string
     {
-        $params['app'] = Application::$app;
+        $params = [
+            'app' => Application::$app,
+            'current_path' => Application::$app->request->getPath(),
+            'helpers' => Helpers::getHelpers(),
+        ];
+        
 
         foreach ($params as $key => $value) {
             $$key = $value;
@@ -47,7 +54,9 @@ class View
      */
     protected function renderOnlyView($view, array $params = []): false|string
     {
+
         $params['app'] = Application::$app;
+        $params['helpers'] = Helpers::getHelpers(); 
 
         foreach ($params as $key => $value) {
             $$key = $value;

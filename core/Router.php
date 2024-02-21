@@ -67,11 +67,19 @@ class Router
             $callback[0] = $controller;
 
             foreach ($controller->getMiddlewares() as $middleware) {
-                $middleware->execute();
+                $actions = $middleware->action;
+
+                if (isset($actions[$controller->action])) {
+                    $methodName = $actions[$controller->action];
+                    $middleware->$methodName();
+
+                    if($middleware->$methodName() === 'next') {
+                        return call_user_func($callback, $this->request, $this->response);
+                    }
+                } 
             }
         }
 
         return call_user_func($callback, $this->request, $this->response);
     }
-
 }

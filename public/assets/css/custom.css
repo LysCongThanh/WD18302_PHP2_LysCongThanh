@@ -1,0 +1,41 @@
+div.choices[data-type="select-multiple"] .choices__inner {
+    padding: 0;
+}
+
+.form-group.invalid  input,
+.form-group.invalid  select,
+.form-group.invalid  textarea {
+    border-color: #f33a58;
+    animation: shake 0.1s;
+}
+
+.form-group.invalid .form-message {
+    color: #f33a58;
+    animation: shake 0.1s;
+}
+
+.form-group.invalid {
+    border-color: #f33a58;
+    animation: shake 0.1s;
+}
+
+.form-group.invalid input::placeholder {
+    color: #f33a5992;
+}
+
+.sidenav .navbar-brand {
+    padding: 0 !important;
+}
+
+.navbar-vertical .navbar-brand-img, .navbar-vertical .navbar-brand>img {
+    max-height: 6rem !important;
+}
+
+.sidenav .navbar-nav>.nav-item>.nav-link.active {
+    background-image: linear-gradient(310deg,#8f98cf,#5e72e4) !important;
+    color: white !important;
+}
+
+.sidenav .navbar-nav>.nav-item>.nav-link.active>.icon>i {
+    color: white !important;
+}

@@ -3,6 +3,7 @@
 namespace app\core\database;
 
 use app\core\exception\ConnectionException;
+use app\core\exception\ServerErrorException;
 use PDO;
 use PDOException;
 use PDOStatement;
@@ -24,7 +25,7 @@ class Database
             $this->pdo = new PDO($dsn, $user, $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException) {
-            throw new ConnectionException();
+            throw new ServerErrorException();
         }
     }
 

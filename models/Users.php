@@ -55,7 +55,6 @@ class Users extends DbModel
 
             $rules['first_name'] = [self::RULE_REQUIRED];
             $rules['last_name'] = [self::RULE_REQUIRED];
-            $rulse['password-confirm'] = [[self::RULE_MATCH, 'match' => 'password']];
 
             $rules['email'] = [self::RULE_REQUIRED, self::RULE_EMAIL, [
                 self::RULE_UNIQUE, 'class' => self::class

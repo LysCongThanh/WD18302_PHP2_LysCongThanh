@@ -1,6 +1,6 @@
 /vendor/
 /node_modules/
-/public/assets/dist/
+/public/assets/src/
 .idea
 .env
 composer.lock

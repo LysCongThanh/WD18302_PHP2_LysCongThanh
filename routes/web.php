@@ -3,8 +3,6 @@
 use app\controllers\AuthController;
 use app\controllers\ContactsController;
 use app\controllers\GroupsController;
-use app\controllers\HomeController;
-use app\core\Application;
 
 /**
  * Set routes for Authentication page
@@ -26,9 +24,11 @@ $app->router->get('/contacts/add', [ContactsController::class, 'add']);
 $app->router->post('/contacts/add', [ContactsController::class, 'add']);
 $app->router->get('/contacts/details', [ContactsController::class, 'details']);
 $app->router->get('/contacts/edit', [ContactsController::class, 'edit']);
+$app->router->post('/contacts/delete', [ContactsController::class, 'delete']);
 
 /**
  * Set routes for groups page
  */
 
 $app->router->get('/groups', [GroupsController::class, 'list']);
+$app->router->get('/groups/edit', [GroupsController::class, 'edit']);

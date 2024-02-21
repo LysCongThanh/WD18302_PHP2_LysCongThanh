@@ -3,8 +3,10 @@
 namespace app\core\database;
 
 use app\core\Application;
+use app\core\exception\ServerErrorException;
 use app\core\Model;
 use app\core\QueryBuilder;
+use PDOException;
 
 abstract class DbModel extends Model
 {
@@ -30,7 +32,7 @@ abstract class DbModel extends Model
             $params = array_map(fn ($attr) => ":$attr", $attributes);
 
             $sql = "INSERT INTO $tableName (" . implode(",", $attributes) . ") 
-            VALUES (" . implode("", $params) . ")";
+            VALUES (" . implode(",", $params) . ")";
 
             $stmt = self::prepare($sql);
 
@@ -42,8 +44,8 @@ abstract class DbModel extends Model
             }
 
             return $stmt->execute();
-        } catch (\PDOException $e) {
-            echo $e->getMessage();
+        } catch (\PDOException) {
+            throw new ServerErrorException();
         }
     }
 
@@ -66,16 +68,83 @@ abstract class DbModel extends Model
         return $stmt->rowCount() > 0;
     }
 
-    public function edit(array $attrs)
+    public function removeIn(array $conditions): bool
     {
-        // To do ....
+        try {
+            $tableName = static::tableName();
+
+            $conditionKey = key($conditions);
+
+            $conditionsValues = $conditions[$conditionKey];
+
+            $condition = "$tableName.$conditionKey";
+
+            $placeholders = array_map(fn ($attr) => ":$conditionKey" . '_' . uniqid(), $conditionsValues);
+            $placeholdersString = implode(', ', $placeholders);
+
+            $sql = "DELETE FROM $tableName WHERE $condition IN ($placeholdersString)";
+
+            $stmt = self::prepare($sql);
+
+            foreach ($conditionsValues as $index => $value) {
+                $conditionValue = $value[$conditionKey];
+                $pdoType = $this->getPDOType($conditionValue);
+                $placeholder = $placeholders[$index];
+                $stmt->bindValue($placeholder, $conditionValue, $pdoType);
+            }
+
+            $stmt->execute();
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            throw new ServerErrorException();
+        }
     }
+
+
+
+    public function edit(array $conditions)
+    {
+        try {
+            $tableName = $this->tableName();
+
+            $attributes = array_intersect($this->attributes(), array_keys(get_object_vars($this)));
+
+            $attributesToUpdate = array_filter($attributes, fn ($attr) => $attr !== 'id');
+
+            $conditionKeys = array_keys($conditions);
+            
+            $conditionStr = implode(" AND", array_map(fn ($attr) => "$attr = :$attr", $conditionKeys));
+
+            $updateSet = implode(', ', array_map(fn ($attr) => "$attr = :$attr", $attributesToUpdate));
+
+            $sql = "UPDATE $tableName SET $updateSet WHERE $conditionStr";
+
+            $stmt = self::prepare($sql);
+
+            foreach ($attributesToUpdate as $attr) {
+                $attrValue = $this->{$attr};
+                $pdoType = $this->getPDOType($attrValue);
+
+                $stmt->bindValue(":$attr", $attrValue, $pdoType);
+            }
+
+            foreach ($conditions as $key => $value) {
+                $pdoType = $this->getPDOType($value);
+                $stmt->bindValue(":$key", $value, $pdoType);
+            }
+
+            return $stmt->execute();
+        } catch (\PDOException) {
+            throw new ServerErrorException();
+        }
+    }
+
 
     /**
      * @param array $condition
      * @return DbModel|false|stdClass|null
      */
-    public function findOne(array $condition)
+    public function findOne(array $condition): stdClass|DbModel|false|null
     {
         $tableName = static::tableName();
         $attrs = array_keys($condition);
@@ -146,12 +215,28 @@ abstract class DbModel extends Model
         $stmt = self::prepare($sql);
         foreach ($params as $key => $value) {
 
-            $typeValue = gettype($value);
+            $pdoType = $this->getPDOType($value);
 
-            $stmt->bindValue($key, $value, self::getPDO()::PARAM_INT);
+            $stmt->bindValue($key, $value, $pdoType);
         }
         $stmt->execute();
         return $stmt->fetchAll(self::getPDO()::FETCH_ASSOC);
+    }
+
+    public function getOne($sql, array $params = [])
+    {
+        $stmt = self::prepare($sql);
+
+        foreach ($params as $key => $value) {
+            $pdoType = $this->getPDOType($value);
+            $stmt->bindValue($key, $value, $pdoType);
+        }
+
+        $stmt->execute();
+
+        $result = $stmt->fetchObject();
+
+        return $result !== false ? $result : false;
     }
 
 

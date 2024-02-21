@@ -114,34 +114,52 @@ function Validator(options) {
 
             if (isFormValid) {
 
-                if (typeof options.onSubmit === 'function') {
-                    var enableInputs = formElement.querySelectorAll('[name]');
+                if (typeof options.onSubmit === "function") {
+                    var enableInputs = formElement.querySelectorAll("[name]");
                     var formValues = Array.from(enableInputs).reduce(function (values, input) {
-
                         switch (input.type) {
-                            case 'radio':
-                                values[input.name] = formElement.querySelector('input[name="' + input.name + '"]:checked').value;
-                                break;
-                            case 'checkbox':
-                                if (!input.matches(':checked')) {
-                                    values[input.name] = '';
-                                    return values;
+                            case "radio":
+                                if (input.matches(":checked")) {
+                                    values[input.name] = input.value;
                                 }
+                                break;
+                            case "checkbox":
                                 if (!Array.isArray(values[input.name])) {
                                     values[input.name] = [];
                                 }
-                                values[input.name].push(input.value);
+                                if (input.matches(":checked")) {
+                                    values[input.name].push(input.value);
+                                }
                                 break;
-                            case 'file':
+                            case "file":
                                 values[input.name] = input.files;
                                 break;
+                            case "select-one":  // Handle single select (Choices.js)
+                                values[input.name] = input.value;
+                                break;
+                            case "select-multiple":  // Handle multiple select (Choices.js)
+                                if (!Array.isArray(values[input.name])) {
+                                    values[input.name] = [];
+                                }
+                                var choicesSelect = input.closest('.choices');
+                                if (choicesSelect) {
+                                    var nativeSelect = choicesSelect.querySelector('select'); // Get the underlying select element
+                                    var selectedOptions = Array.from(nativeSelect.selectedOptions);
+                                    if (selectedOptions.length > 0) {
+                                        values[input.name] = selectedOptions.map(option => option.value);
+                                    }
+                                }
+                                break;
+
                             default:
                                 values[input.name] = input.value;
                         }
 
                         return values;
                     }, {});
-                    options.onSubmit(formValues, e);
+
+                    // Pass an object containing formValues and the event
+                    options.onSubmit(formValues, event);
                 } else {
                     formElement.submit();
                 }

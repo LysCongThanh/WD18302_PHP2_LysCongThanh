@@ -10,10 +10,10 @@ if(document.querySelector('#form-login')) {
         rules: [
             Validator.isRequired('input[name="email"]', 'Không được bỏ trống !'),
             Validator.isEmail('input[name="email"]', 'Vui long nhap email !'),
-            Validator.isRequired('input[name="password"]', 'Không được bỏ trống !')
+            Validator.isPassword('input[name="password"]')
         ],
 
-        onSubmit: function(data) {
+        onSubmit: function(data, e) {
             const postResult = postData(`${webRoot}/api/login`, data);
 
             postResult.then((result) => {
