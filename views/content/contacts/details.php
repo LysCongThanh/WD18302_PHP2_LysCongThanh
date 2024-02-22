@@ -22,8 +22,8 @@ $this->title = $title;
                     <div class="row justify-content-center">
                         <div class="col-4 col-lg-4 order-lg-2">
                             <div class="mt-n4 mt-lg-n6 mb-4 mb-lg-0">
-                                <a href="<?= $app->url(''.$contact->image) ?>">
-                                    <img src="<?= $app->url(''.$contact->image) ?>" class="rounded-circle img-fluid border border-2 border-white">
+                                <a href="<?= $app->url('' . $contact->image) ?>">
+                                    <img src="<?= $app->url('' . $contact->image) ?>" class="rounded-circle img-fluid border border-2 border-white">
                                 </a>
                             </div>
                         </div>
@@ -60,12 +60,17 @@ $this->title = $title;
                             <a href="" class="btn btn-primary">+ Thêm mới</a>
                         </div>
                         <ul class="list-group">
-  <li class="list-group-item">An item</li>
-  <li class="list-group-item">A second item</li>
-  <li class="list-group-item">A third item</li>
-  <li class="list-group-item">A fourth item</li>
-  <li class="list-group-item">And a fifth one</li>
-</ul>
+                            <?php if (count($groupsOfContact) > 0) : ?>
+                                <?php foreach ($groupsOfContact as $group) :  ?>
+                                    <li class="list-group-item"><?= $group['group_name'] ?></li>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                            <?php if (!count($groupsOfContact) > 0) : ?>
+                                <li class="list-group-item">
+                                    <div class="text-danger">Trống !</div>
+                                </li>
+                            <?php endif; ?>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -80,16 +85,16 @@ $this->title = $title;
                     <div class="card-header pb-0 p-3">
                         <div class="row">
                             <div class="col-md-8 d-flex align-items-center">
-                                <h6 class="mb-0">Thong tin ca nhan</h6>
+                                <h6 class="mb-0">Thông tin cá nhân</h6>
                             </div>
                         </div>
                     </div>
                     <div class="card-body p-3">
                         <hr class="horizontal gray-light my-4">
                         <ul class="list-group">
-                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Ten day du:</strong> &nbsp; Alec M. Thompson</li>
-                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">So dien thoai:</strong> &nbsp; (44) 123 1234 123</li>
-                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Email:</strong> &nbsp; <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="82e3eee7e1f6eaedeff2f1edecc2efe3ebeeace1edef">[email&#160;protected]</a></li>
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Tên đầy đủ:</strong> &nbsp; <?= $contact->name ?></li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Số điện thoại:</strong> &nbsp; <?= $contact->telephone ?></li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Email:</strong> &nbsp; <?= "Email" ?></li>
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Dia chi:</strong> &nbsp; Can Tho</li>
                         </ul>
                     </div>
@@ -101,8 +106,8 @@ $this->title = $title;
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
-                            <h5 class="font-weight-bolder">Ghi chu</h5>
-                            <a href="" class="btn btn-primary">+ them moi</a>
+                            <h5 class="font-weight-bolder">Ghi chú</h5>
+                            <a href="" class="btn btn-primary">+ Thêm mới</a>
                         </div>
                     </div>
                 </div>

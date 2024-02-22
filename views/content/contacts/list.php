@@ -98,8 +98,8 @@ $this->title = $title;
                                             </a>
                                             <ul class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable2" style>
                                                 <li><a class="dropdown-item border-radius-md" href="<?= $app->url('contacts/details?id='.$id) ?>"><i class="fas fa-eye me-2"></i> Chi tiết</a></li>
-                                                <li><a class="dropdown-item border-radius-md" href="javascript:;"><i class="fas fa-user-edit me-2"></i> Sửa</a></li>
-                                                <li><a class="dropdown-item border-radius-md" href="javascript:;"><i class="fas fa-trash me-2"></i> Xóa</a></li>
+                                                <li><a class="dropdown-item border-radius-md" href="<?= $app->url('contacts/edit?id='.$id) ?>"><i class="fas fa-user-edit me-2"></i> Sửa</a></li>
+                                                <li><a class="dropdown-item border-radius-md" href="<?= $app->url('contacts/?id='.$id) ?>"><i class="fas fa-trash me-2"></i> Xóa</a></li>
                                             </ul>
                                         </div>
                                     </td>
