@@ -31,7 +31,7 @@ class Groups extends Controller
         }
     }
 
-    public function getGroupByUser(Request $request, Response $response)
+    public function getGroupsByUser(Request $request, Response $response)
     {
         if ($request->isGet()) {
             $getData = $request->getBody();

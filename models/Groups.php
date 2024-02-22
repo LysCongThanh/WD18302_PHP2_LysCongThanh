@@ -58,9 +58,12 @@ class Groups extends DbModel {
     }
 
     public function getGroupsByUser(): array {
-        $sql = $this->select()
-        ->table($this->tableName())
-        ->where('id_user', '=', ':id_user')
+        $sql = $this->select('g.*, COUNT(c.id) as contact_count ')
+        ->table($this->tableName(). ' as g')
+        ->leftJoin('contact_group AS cg', 'g.id = cg.group_id')
+        ->leftJoin('contacts as c', 'cg.contact_id = c.id')
+        ->where('g.id_user',  '=', ':id_user')
+        ->groupBy('g.id')
         ->get();
 
         $id_user = Application::$app->session->get('user');

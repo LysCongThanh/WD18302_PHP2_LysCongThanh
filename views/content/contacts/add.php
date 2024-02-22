@@ -15,14 +15,14 @@
                         <div class="col-6 form-group">
                             <label class="form-label">Tên liên hệ</label>
 
-                            <input id="firstName" name="name" class="form-control" type="text" placeholder="Nhập tên liên hệ..." required="required">
+                            <input id="firstName" name="name" class="form-control" type="text" placeholder="Nhập tên liên hệ...">
 
                             <div class="form-message"></div>
                         </div>
                         <div class="col-6 form-group">
                             <label class="form-label">Số điện thoại</label>
 
-                            <input id="lastName" name="telephone" class="form-control" type="text" placeholder="Nhập số điện thoại..." required="required">
+                            <input id="lastName" name="telephone" class="form-control" type="text" placeholder="Nhập số điện thoại...">
 
                             <div class="form-message"></div>
                         </div>
@@ -39,9 +39,6 @@
                                     <label class="form-label mt-4">Nhóm liên hệ</label>
                                     <select class="form-control" name="group" id="choices-group" multiple>
                                         <option value="" disabled>Phân loại liên hệ</option>
-                                        <option value="1">English</option>
-                                        <option value="2">French</option>
-                                        <option value="3">Spanish</option>
                                     </select>
                                     <div class="form-message"></div>
                                 </div>
@@ -68,4 +65,4 @@
         </form>
 
     </div>
-</div>
+</div> 

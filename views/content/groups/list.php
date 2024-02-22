@@ -87,7 +87,7 @@
                                         </div>
                                         <div class="mx-auto">
                                             <p class="text-xs mb-0 text-secondary font-weight-bold">Liên hệ</p>
-                                            <span class="text-xs font-weight-bolder">5</span>
+                                            <span class="text-xs font-weight-bolder"><?= $contact_count ?></span>
                                         </div>
                                     </div>
                                 </div>

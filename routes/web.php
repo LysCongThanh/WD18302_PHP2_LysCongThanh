@@ -20,6 +20,7 @@ $app->router->get('/profile', [AuthController::class, 'profile']);
  */
 
 $app->router->get('/', [ContactsController::class, 'list']);
+$app->router->get('/contacts', [ContactsController::class, 'list']);
 $app->router->get('/contacts/add', [ContactsController::class, 'add']);
 $app->router->post('/contacts/add', [ContactsController::class, 'add']);
 $app->router->get('/contacts/details', [ContactsController::class, 'details']);

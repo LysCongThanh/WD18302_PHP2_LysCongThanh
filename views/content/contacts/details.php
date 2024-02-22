@@ -6,12 +6,11 @@ $this->title = $title;
 
 <div class="row">
     <div class="col-lg-6">
-        <h4 class="text-white">Thong tin lien he</h4>
-        <!--        <p class="text-white opacity-8">We’re constantly trying to express ourselves and actualize our dreams. If you have the opportunity to play.</p>-->
+        <h4 class="text-white">Thông tin liên hệ</h4>
+        <p class="text-white opacity-8">Chúng tôi không ngừng cố gắng thể hiện bản thân và hiện thực hóa ước mơ của mình. Nếu bạn có cơ hội chơi.</p>
     </div>
     <div class="col-lg-6 text-right d-flex flex-column justify-content-center">
-        <a href="/contacts/edit?id=1" type="button"
-           class="btn btn-outline-white mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2">Sua</a>
+        <a href="/contacts/edit?id=<?= $contact->id ?>" type="button" class="btn btn-outline-white mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2">Sửa</a>
     </div>
 </div>
 <div class="row mt-4">
@@ -23,15 +22,15 @@ $this->title = $title;
                     <div class="row justify-content-center">
                         <div class="col-4 col-lg-4 order-lg-2">
                             <div class="mt-n4 mt-lg-n6 mb-4 mb-lg-0">
-                                <a href="javascript:;">
-                                    <img src="/assets/img/team-2.jpg" class="rounded-circle img-fluid border border-2 border-white">
+                                <a href="<?= $app->url(''.$contact->image) ?>">
+                                    <img src="<?= $app->url(''.$contact->image) ?>" class="rounded-circle img-fluid border border-2 border-white">
                                 </a>
                             </div>
                         </div>
                     </div>
                     <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
                         <div class="d-flex justify-content-center">
-                            <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-none d-lg-block">Goi</a>
+                            <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-none d-lg-block">Gọi</a>
                         </div>
                     </div>
                     <div class="card-body pt-0">
@@ -43,13 +42,10 @@ $this->title = $title;
                         </div>
                         <div class="text-center mt-4">
                             <h5>
-                                Name here !
+                                <?= $contact->name ?>
                             </h5>
-                            <div class="h6 font-weight-300">
-                                <i class="ni location_pin mr-2"></i>Adress here !
-                            </div>
                             <div class="h6 mt-4">
-                                <i class="ni business_briefcase-24 mr-2"></i>Contacts here !
+                                <i class="ni business_briefcase-24 mr-2"></i><?= $contact->telephone ?>
                             </div>
                         </div>
                     </div>
@@ -60,11 +56,16 @@ $this->title = $title;
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
-                            <h5 class="font-weight-bolder">Nhom lien he</h5>
-                            <a href="" class="btn btn-primary">+ them moi</a>
+                            <h5 class="font-weight-bolder">Nhóm liên hệ</h5>
+                            <a href="" class="btn btn-primary">+ Thêm mới</a>
                         </div>
-
-
+                        <ul class="list-group">
+  <li class="list-group-item">An item</li>
+  <li class="list-group-item">A second item</li>
+  <li class="list-group-item">A third item</li>
+  <li class="list-group-item">A fourth item</li>
+  <li class="list-group-item">And a fifth one</li>
+</ul>
                     </div>
                 </div>
             </div>

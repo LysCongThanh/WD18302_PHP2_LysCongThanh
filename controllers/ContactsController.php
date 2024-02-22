@@ -4,10 +4,13 @@ namespace app\controllers;
 
 use app\core\Application;
 use app\core\Controller;
+use app\core\exception\ForbiddenException;
+use app\core\exception\NotFoundException;
 use app\core\middlewares\AuthMiddleware;
 use app\core\Response;
 use app\models\Contacts;
 use app\core\Request;
+use Dotenv\Exception\InvalidFileException;
 
 class ContactsController extends Controller
 {
@@ -39,8 +42,27 @@ class ContactsController extends Controller
 
     public function details(Request $request)
     {
+        if(!isset($request->getBody()['id'])) {
+            throw new NotFoundException();
+        }
+
+        $contact_id = intval($request->getBody()['id']);
+        $user_id = intval(Application::$app->session->get('user'));
+        $contactsModels = Contacts::getInstance();
+        $contactResult = $contactsModels->findOne([
+            'id' => $contact_id, 
+            'id_user' => $user_id
+        ]);
+        $groupsOfContact = $contactsModels->getGroupsOfContact($contact_id, $user_id);
+
+        if(!$contactResult) {
+            throw new ForbiddenException();
+        }
+
         return $this->render('content/contacts/details', [
-            'title' => 'TeleCards - Details'
+            'title' => 'TeleCards - Details',
+            'contact' => $contactResult,
+            'groupsOfContact' => $groupsOfContact
         ]);
     }
 
@@ -53,27 +75,6 @@ class ContactsController extends Controller
 
     public function add(Request $request, Response $response)
     {
-
-        if ($request->isPost()) {
-            $postData = $request->getBody();
-            $dataConverted = [
-                'id_user' => intval($postData['id_user']),
-                'name' => strval($postData['name']),
-                'telephone' => strval($postData['telephone']),
-                'company' => strval($postData['company']),
-            ];
-            $contactsModel = new Contacts;
-            $contactsModel->loadData($dataConverted);
-            if ($contactsModel->validate()) {
-                $addContactResult = $contactsModel->createContact();
-                var_dump($addContactResult);
-                die();
-            }
-
-            var_dump($contactsModel);
-            die();
-        }
-
         return $this->render('content/contacts/add', [
             'title' => 'TeleCards - Add'
         ]);

@@ -1,5 +1,5 @@
 div.choices[data-type="select-multiple"] .choices__inner {
-    padding: 0;
+    padding: 0 8px;
 }
 
 .form-group.invalid  input,
@@ -38,4 +38,16 @@ div.choices[data-type="select-multiple"] .choices__inner {
 
 .sidenav .navbar-nav>.nav-item>.nav-link.active>.icon>i {
     color: white !important;
+}
+
+.dz-remove {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    cursor: pointer !important;
+    z-index: 1001;
+}
+
+.dz-remove i {
+    font-size: 1.5rem;
 }

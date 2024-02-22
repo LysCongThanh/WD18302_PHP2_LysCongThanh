@@ -72,6 +72,7 @@ function Validator(options) {
                         if (activeTabLink) {
                             activeTabLink.classList.remove('active');
                         }
+                        inputElement.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
 
                         errorTab = inputElement.closest('.tab-pane');
                     }

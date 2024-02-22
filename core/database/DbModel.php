@@ -112,7 +112,7 @@ abstract class DbModel extends Model
             $attributesToUpdate = array_filter($attributes, fn ($attr) => $attr !== 'id');
 
             $conditionKeys = array_keys($conditions);
-            
+
             $conditionStr = implode(" AND", array_map(fn ($attr) => "$attr = :$attr", $conditionKeys));
 
             $updateSet = implode(', ', array_map(fn ($attr) => "$attr = :$attr", $attributesToUpdate));
@@ -148,7 +148,7 @@ abstract class DbModel extends Model
     {
         $tableName = static::tableName();
         $attrs = array_keys($condition);
-        $conditionStr = implode(" AND", array_map(fn ($attr) => "$attr = :$attr", $attrs));
+        $conditionStr = implode(" AND ", array_map(fn ($attr) => "$attr = :$attr", $attrs));
         $sql = "SELECT * FROM $tableName WHERE BINARY $conditionStr";
         $stmt = self::prepare($sql);
         foreach ($condition as $key => $value) {
@@ -238,6 +238,22 @@ abstract class DbModel extends Model
 
         return $result !== false ? $result : false;
     }
+
+    public static function getLastInsertedId(): ?int
+    {
+        $tableName = static::tableName();
+        $pdo = self::getPDO();
+
+        try {
+            $query = $pdo->query("SELECT LAST_INSERT_ID() FROM $tableName");
+            $lastInsertId = $query->fetchColumn();
+
+            return $lastInsertId !== false ? (int)$lastInsertId : null;
+        } catch (\PDOException $e) {
+            return null;
+        }
+    }
+
 
 
     /**

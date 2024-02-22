@@ -8,10 +8,11 @@ class Request
     /**
      * @return string
      */
-    public function getPath() : string {
+    public function getPath(): string
+    {
         $path = $_SERVER['REQUEST_URI'] ?? '/';
         $position = strpos($path, '?');
-        if(!$position) {
+        if (!$position) {
             return $path;
         }
 
@@ -21,7 +22,7 @@ class Request
     /**
      * @return string
      */
-    public function getMethod() : string
+    public function getMethod(): string
     {
         return strtolower($_SERVER['REQUEST_METHOD']);
     }
@@ -29,14 +30,16 @@ class Request
     /**
      * @return bool
      */
-    public function isGet() : bool {
+    public function isGet(): bool
+    {
         return $this->getMethod() === 'get';
     }
 
     /**
      * @return bool
      */
-    public function isPost() : bool {
+    public function isPost(): bool
+    {
         return $this->getMethod() === 'post';
     }
 
@@ -46,13 +49,22 @@ class Request
     public function getBody(): array
     {
         $body = [];
-        if($this->getMethod() === 'get') {
+
+        if ($this->getMethod() === 'get') {
             foreach ($_GET as $key => $value) {
                 $body[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
             }
         }
 
-        if($this->getMethod() === 'post') {
+        if ($this->getMethod() === 'post') {
+
+            if (!empty($_FILES)) {
+
+                foreach ($_FILES as $key => $file) {
+                    $body[$key] = $file;
+                }
+            }
+
             foreach ($_POST as $key => $value) {
                 $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
             }
@@ -60,10 +72,11 @@ class Request
 
         if ($this->getMethod() === 'post' && $_SERVER['CONTENT_TYPE'] === 'application/json') {
             $json = file_get_contents('php://input');
-            $body = json_decode($json, true);
+            $jsonData = json_decode($json, true);
+
+            $body = array_merge($body, $jsonData);
         }
 
         return $body;
     }
-
 }
