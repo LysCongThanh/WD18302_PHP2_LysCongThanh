@@ -18,9 +18,9 @@ class ContactsController extends Controller
     public function __construct()
     {
         return $this->registerMiddleware(new AuthMiddleware([
-            'list' => 'checkLogin', 
-            'add' => 'checkLogin', 
-            'details' => 'checkLogin', 
+            'list' => 'checkLogin',
+            'add' => 'checkLogin',
+            'details' => 'checkLogin',
             'edit' => 'checkLogin'
         ]));
     }
@@ -30,7 +30,7 @@ class ContactsController extends Controller
         $contacts = Contacts::getInstance();
         $user_id = Application::$app->session->get('user');
         $contactsData = null;
-        if($user_id) {
+        if ($user_id) {
             $contactsData = $contacts->getContactsByUser($user_id);
         }
 
@@ -42,7 +42,7 @@ class ContactsController extends Controller
 
     public function details(Request $request)
     {
-        if(!isset($request->getBody()['id'])) {
+        if (!isset($request->getBody()['id'])) {
             throw new NotFoundException();
         }
 
@@ -50,12 +50,12 @@ class ContactsController extends Controller
         $user_id = intval(Application::$app->session->get('user'));
         $contactsModels = Contacts::getInstance();
         $contactResult = $contactsModels->findOne([
-            'id' => $contact_id, 
+            'id' => $contact_id,
             'id_user' => $user_id
         ]);
         $groupsOfContact = $contactsModels->getGroupsOfContact($contact_id, $user_id);
 
-        if(!$contactResult) {
+        if (!$contactResult) {
             throw new ForbiddenException();
         }
 
@@ -66,10 +66,29 @@ class ContactsController extends Controller
         ]);
     }
 
-    public function edit()
+    public function edit(Request $request, Response $response)
     {
+        if (!isset($request->getBody()['id'])) {
+            throw new NotFoundException();
+        }
+
+        $contact_id = intval($request->getBody()['id']);
+        $user_id = intval(Application::$app->session->get('user'));
+        $contactsModels = Contacts::getInstance();
+        $contactResult = $contactsModels->findOne([
+            'id' => $contact_id,
+            'id_user' => $user_id
+        ]);
+        $groupsOfContact = $contactsModels->getGroupsOfContact($contact_id, $user_id);
+
+        if (!$contactResult) {
+            throw new ForbiddenException();
+        }
+
         return $this->render('content/contacts/edit', [
-            'title' => 'TeleCards - Edit'
+            'title' => 'TeleCards - Edit',
+            'contact' => $contactResult,
+            'groupsOfContact' => $groupsOfContact
         ]);
     }
 
@@ -82,7 +101,7 @@ class ContactsController extends Controller
 
     public function delete(Request $request, Response $response)
     {
-        if($request->isPost()) {
+        if ($request->isPost()) {
             $postData = $request->getBody();
             $dataConverted = [
                 'id' => intval($postData['id'])
@@ -90,5 +109,4 @@ class ContactsController extends Controller
             var_dump($dataConverted);
         }
     }
-
 }

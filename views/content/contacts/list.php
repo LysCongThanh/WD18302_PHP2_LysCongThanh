@@ -17,8 +17,11 @@ $this->title = $title;
                 <div class="d-lg-flex">
                     <div class="ms-auto my-auto mt-lg-0 mt-4">
                         <div class="ms-auto my-auto">
-                            <a href="/contacts/add" class="btn bg-gradient-primary btn-sm mb-0" target="_blank">+&nbsp;
+                            <a href="/contacts/add" class="btn bg-gradient-primary btn-sm mb-0">+&nbsp;
                                 Thêm liên hệ</a>
+                            <button type="button" id="btn-remove" class="btn bg-gradient-warning btn-sm mb-0">
+                                Xóa liên hệ
+                            </button>
                             <button type="button" class="btn btn-outline-primary btn-sm mb-0" data-bs-toggle="modal" data-bs-target="#import">
                                 Nhập liên hệ
                             </button>
@@ -71,10 +74,14 @@ $this->title = $title;
                                 <?php extract($contact) ?>
                                 <tr>
                                     <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div>
-                                                <img src="<?= $app->url('') ?><?= $image ?>" class="avatar avatar-sm me-3" alt="user1">
+                                        <div class="d-flex">
+                                            <div class="form-check my-auto">
+                                                <input class="form-check-input checkbox-item" value="<?= $id ?>" type="checkbox" id="customCheck1">
                                             </div>
+
+
+                                            <img src="<?= $app->url('') ?><?= $image ?>" class="avatar avatar-sm me-3" alt="user1">
+
                                             <div class="d-flex flex-column justify-content-center">
                                                 <h6 class="mb-0 text-sm"><?= $name ?></h6>
                                                 <p class="text-xs text-secondary mb-0"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="147e7b7c7a5477667175607d627139607d793a777b79">[email&#160;protected]</a>
@@ -91,17 +98,16 @@ $this->title = $title;
                                     <td class="align-middle text-center">
                                         <span class="text-secondary text-xs font-weight-bold"><?= $helpers->formatHelpers->date_formatted($created_at) ?></span>
                                     </td>
-                                    <td class="align-middle text-end">
-                                        <div class="dropdown">
-                                            <a href="javascript:;" class="cursor-pointer" id="dropdownTable2" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="fa fa-ellipsis-h text-secondary" aria-hidden="true"></i>
-                                            </a>
-                                            <ul class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable2" style>
-                                                <li><a class="dropdown-item border-radius-md" href="<?= $app->url('contacts/details?id='.$id) ?>"><i class="fas fa-eye me-2"></i> Chi tiết</a></li>
-                                                <li><a class="dropdown-item border-radius-md" href="<?= $app->url('contacts/edit?id='.$id) ?>"><i class="fas fa-user-edit me-2"></i> Sửa</a></li>
-                                                <li><a class="dropdown-item border-radius-md" href="<?= $app->url('contacts/?id='.$id) ?>"><i class="fas fa-trash me-2"></i> Xóa</a></li>
-                                            </ul>
-                                        </div>
+                                    <td class="text-sm text-center">
+                                        <button class="detail-contact-btn m-0 p-3 rounded-2 btn" data-id="<?= $id ?>">
+                                            <i class="fas fa-eye text-secondary"></i>
+                                        </button>
+                                        <a href="<?= $app->url('contacts/edit?id='.$id) ?>" class="edit-contact-btn m-0 p-3 rounded-2 btn mx-2" data-id="<?= $id ?>">
+                                            <i class="fas fa-user-edit text-secondary"></i>
+                                        </a>
+                                        <button class="remove-contact-btn m-0 p-3 rounded-2 btn" data-id="<?= $id ?>">
+                                            <i class="fas fa-trash text-secondary"></i>
+                                        </button>
                                     </td>
                                 </tr>
 

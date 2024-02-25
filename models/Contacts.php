@@ -61,7 +61,7 @@ class Contacts extends DbModel
     }
 
     public function getGroupsOfContact($contact_id, $user_id) {
-        $sql = $this->select("g.name as group_name")
+        $sql = $this->select("g.name as group_name, g.id as group_id")
         ->table($this->tableName().' as c')
         ->join('contact_group as c_g', 'c_g.contact_id = c.id')
         ->join('groups as g', 'g.id = c_g.group_id')

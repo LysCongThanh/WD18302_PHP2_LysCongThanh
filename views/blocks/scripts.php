@@ -10,22 +10,6 @@
 <script>
 
     const webRoot = window.location.origin;
-
-    Dropzone.autoDiscover = false;
-    if(document.querySelector('#productImg')) {
-        const dropzoneElement = document.querySelector('#productImg');
-        let myDropzone = new Dropzone(dropzoneElement, {
-        url: 'dropZone/upLoadImage', // URL để gửi tệp đã chọn đến máy chủ
-        paramName: 'image',
-        maxFilesize: 5, // Giới hạn dung lượng tệp (MB)
-        addRemoveLinks: true, // Hiển thị nút xóa cho từng tệp
-        dictRemoveFile: `<i class="fa-solid fa-circle-xmark"></i>`, // Chữ hoặc biểu tượng để xóa tệp
-        dictDefaultMessage: `<i class="fas fa-cloud-upload-alt"></i> Drop files here or click to upload`, // Tin nhắn mặc định
-        acceptedFiles: "image/*", // Loại tệp cho phép (trong trường hợp này, chỉ hình ảnh)
-        autoProcessQueue: false, // Tắt tự động tải lên
-    });
-    }
-    
     
 </script>
 

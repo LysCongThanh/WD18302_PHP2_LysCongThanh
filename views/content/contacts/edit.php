@@ -2,9 +2,11 @@
 
 $this->title = $title;
 
+var_dump($groupsOfContact)
+
 ?>
 
-<div class="row">
+<div class="row" id="contact-edit">
     <div class="col-lg-6">
         <h4 class="text-white">Chỉnh sửa liên hệ</h4>
         <p class="text-white opacity-8">
@@ -22,7 +24,7 @@ $this->title = $title;
                 <h5 class="font-weight-bolder">Ảnh đại diện</h5>
                 <div class="row">
                     <div class="col-12">
-                        <img class="w-100 border-radius-lg shadow-lg mt-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/product-page.jpg" alt="product_image">
+                        <img class="w-100 border-radius-lg shadow-lg mt-3" src="<?= $app->url('' . $contact->image) ?>" alt="product_image">
                     </div>
                     <div class="col-12 mt-5">
                         <div class="d-flex">
@@ -41,24 +43,33 @@ $this->title = $title;
                 <div class="row">
                     <div class="col-12 col-sm-6">
                         <label>Tên</label>
-                        <input class="form-control" type="text" value="Thành đói bụng" />
+                        <input class="form-control" type="text" value="<?= $contact->name ?>" />
                     </div>
                     <div class="col-12 col-sm-6 mt-3 mt-sm-0">
                         <label>Số điện thoại</label>
-                        <input class="form-control" type="text" value="0652906529" />
+                        <input class="form-control" type="text" value="<?= $contact->telephone ?>" />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6">
                         <label class="mt-4">Doanh nghiệp</label>
-                        <input class="form-control" type="text" value="FPOLY" />
+                        <input class="form-control" type="text" value="<?= $contact->company ?>" />
                     </div>
-                    <div class="col-6">
-                        <label class="form-label mt-4">Nhom lien he</label>
-                        <select class="form-control" name="choices-language" id="choices-group" multiple>
-                            <option value="English" selected>English</option>
-                            <option value="French" selected>French</option>
-                            <option value="Spanish">Spanish</option>
+                    <div class="col-6 form-group">
+                        <label class="mt-4">Nhóm liên hệ</label>
+                        <select class="form-control" name="groups" id="choices-groups" multiple>
+                            <option value="" disabled>Phân loại liên hệ</option>
+
+                            <?php if (count($groupsOfContact) > 0) : ?>
+                                <?php foreach ($groupsOfContact as $group) : ?>
+                                    <?php extract($group) ?>
+
+                                    <!-- Load data here -->
+                                    <option value="<?= $group_id ?>"><?= $group_name ?></option>
+
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+
                         </select>
                     </div>
 

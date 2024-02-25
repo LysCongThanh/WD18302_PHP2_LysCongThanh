@@ -9,6 +9,7 @@ use app\controllers\api_handler\Auth;
 use app\controllers\api_handler\Contacts;
 use app\controllers\api_handler\ContactsGroups;
 use app\controllers\api_handler\Dropzone;
+use app\models\Contacts as ModelsContacts;
 
 // Routes for Auth
 $app->router->post($app->api_prefix . '/login', [Auth::class, 'checkLogin']);
@@ -34,6 +35,8 @@ $app->router->post($app->api_prefix . '/groups/remove', [Groups::class, 'remove'
  */
 
 $app->router->post($app->api_prefix . '/contacts/add', [Contacts::class, 'saveContacts']);
+$app->router->post($app->api_prefix . '/contacts/remove-in', [Contacts::class, 'removeDatasIn']);
+$app->router->get($app->api_prefix . '/contacts/detail', [Contacts::class, 'contactDetail']);
 
 /**
  * Routes for contacts-groups

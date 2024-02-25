@@ -2,9 +2,9 @@ div.choices[data-type="select-multiple"] .choices__inner {
     padding: 0 8px;
 }
 
-.form-group.invalid  input,
-.form-group.invalid  select,
-.form-group.invalid  textarea {
+.form-group.invalid input,
+.form-group.invalid select,
+.form-group.invalid textarea {
     border-color: #f33a58;
     animation: shake 0.1s;
 }
@@ -27,12 +27,13 @@ div.choices[data-type="select-multiple"] .choices__inner {
     padding: 0 !important;
 }
 
-.navbar-vertical .navbar-brand-img, .navbar-vertical .navbar-brand>img {
+.navbar-vertical .navbar-brand-img,
+.navbar-vertical .navbar-brand>img {
     max-height: 6rem !important;
 }
 
 .sidenav .navbar-nav>.nav-item>.nav-link.active {
-    background-image: linear-gradient(310deg,#8f98cf,#5e72e4) !important;
+    background-image: linear-gradient(310deg, #8f98cf, #5e72e4) !important;
     color: white !important;
 }
 
@@ -50,4 +51,18 @@ div.choices[data-type="select-multiple"] .choices__inner {
 
 .dz-remove i {
     font-size: 1.5rem;
+}
+
+.custom-swal-container .swal2-popup {
+    width: 50em !important;
+}
+
+.custom-swal-container div {
+    overflow: hidden !important;
+}
+
+.img-custom {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
